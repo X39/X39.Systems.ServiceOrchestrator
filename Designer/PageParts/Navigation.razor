@@ -1,0 +1,14 @@
+@using X39.Systems.ServiceOrchestrator.Designer.Impl.Services
+@inject INavigationService _navigationService
+<nav>
+    <ul>
+        @foreach (var navigationContainer in _navigationService.NavigationContainers)
+        {
+            <li><a href="@navigationContainer.Target">@navigationContainer.LocalizedName</a></li>
+        }
+    </ul>
+</nav>
+
+@code {
+    
+}

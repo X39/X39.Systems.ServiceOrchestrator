@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <RootNamespace>X39.Systems.ServiceOrchestrator.Data</RootNamespace>
+        <AssemblyName>X39.Systems.ServiceOrchestrator.Data</AssemblyName>
+        <PackageId>X39.Systems.ServiceOrchestrator.Data</PackageId>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
+    </ItemGroup>
+
+</Project>

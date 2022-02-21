@@ -1,0 +1,44 @@
+@using X39.Systems.ServiceOrchestrator.Data.Entity
+@using X39.Systems.ServiceOrchestrator.Designer.Contract.Data
+@using X39.Systems.ServiceOrchestrator.Designer.Contract.Repositories
+@inject IAgentRepository _agentRepository
+<Accordion>
+    <Header>
+        <h1 class="accordion-header no-select pointer full-width">Agents</h1>
+    </Header>
+    <Content>
+        <AsyncContent LoadCallbackAsync="LoadCallbackAsync">
+            <div class="accordion-content">
+                <div class="pointer no-select full-width" @onclick="CreateNewAgent">Add new Agent</div>
+                <ul>
+                    @foreach (var agent in _agents)
+                    {
+                        <li>@agent.Name (@agent.Id)</li>
+                    }
+                </ul>
+            </div>
+        </AsyncContent>
+    </Content>
+</Accordion>
+
+@code {
+    private List<Agent> _agents = new();
+
+    private async Task LoadCallbackAsync()
+    {
+        _agents.Clear();
+        await foreach (var agent in _agentRepository.GetAgentsAsync())
+        {
+            _agents.Add(agent);
+        }
+    }
+
+    private void CreateNewAgent()
+    {
+        _background.Add("Creating new agent...", async (cancellationToken, _) =>
+        {
+            var newAgent = await _agentRepository.CreateAgentAsync(cancellationToken, new Agent {Name = "New Agent"});
+            _agents.Add(newAgent);
+        });
+    }
+}

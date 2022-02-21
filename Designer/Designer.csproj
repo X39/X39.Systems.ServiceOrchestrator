@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>latest</LangVersion>
+        <ScopedCssEnabled>true</ScopedCssEnabled>
+        <RootNamespace>X39.Systems.ServiceOrchestrator.Designer</RootNamespace>
+        <AssemblyName>X39.Systems.ServiceOrchestrator.Designer</AssemblyName>
+        <PackageId>X39.Systems.ServiceOrchestrator.Designer</PackageId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.2" />
+        <PackageReference Include="X39.Util" Version="1.0.0.14" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Data\Data.csproj" />
+      <ProjectReference Include="..\Designer.Contract\Designer.Contract.csproj" />
+      <ProjectReference Include="..\Designer.Impl\Designer.Impl.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Attributes" />
+    </ItemGroup>
+
+
+</Project>

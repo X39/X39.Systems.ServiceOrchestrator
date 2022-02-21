@@ -1,0 +1,59 @@
+@if (IsLoading)
+{
+    <!-- ToDo: Style properly -->
+    <p>Loading</p>
+}
+else
+{
+    @ChildContent
+}
+
+@code {
+
+    public bool IsLoading { get; set; } = true;
+
+    [Parameter]
+    [EditorRequired]
+    public Func<Task> LoadCallbackAsync { get; set; } = () => Task.CompletedTask;
+
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public Func<Exception?, Task>? FaultedCallbackAsync { get; set; }
+    [Parameter]
+    public Action<Exception?>? FaultedCallback { get; set; }
+    [Parameter]
+    public Func<Task>? CancelledCallbackAsync { get; set; }
+    [Parameter]
+    public Action? CancelledCallback { get; set; }
+    [Parameter]
+    public Func<Task>? CompletedCallbackAsync { get; set; }
+    [Parameter]
+    public Action? CompletedCallback { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        return LoadCallbackAsync().ContinueWith((t) =>
+        {
+            IsLoading = false;
+            if (t.IsCanceled)
+            {
+                CancelledCallback?.Invoke();
+                CancelledCallbackAsync?.Invoke();
+            }
+            else if (t.IsFaulted)
+            {
+                FaultedCallback?.Invoke(t.Exception);
+                FaultedCallbackAsync?.Invoke(t.Exception);
+            }
+            else if (t.IsCompletedSuccessfully)
+            {
+                CompletedCallback?.Invoke();
+                CompletedCallbackAsync?.Invoke();
+            }
+        });
+    }
+
+}

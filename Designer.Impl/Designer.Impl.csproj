@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>X39.Systems.ServiceOrchestrator.Designer.Impl</RootNamespace>
+        <AssemblyName>X39.Systems.ServiceOrchestrator.Designer.Impl</AssemblyName>
+        <PackageId>X39.Systems.ServiceOrchestrator.Designer.Impl</PackageId>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Designer.Contract\Designer.Contract.csproj" />
+      <ProjectReference Include="..\X39.Util.Blazor\X39.Util.Blazor.csproj" />
+    </ItemGroup>
+
+</Project>
