@@ -1,0 +1,48 @@
+@using X39.Systems.ServiceOrchestrator.Data.Entity
+@using X39.Systems.ServiceOrchestrator.Designer.Contract.Repositories
+@inject ITypeDefinitionRepository _typeDefinitionRepository
+@attribute [ToolBoxComponent]
+
+<section>
+    <Accordion>
+        <Header>
+            <h1 class="accordion-header no-select pointer full-width">TypeDefinitions</h1>
+        </Header>
+        <Content>
+            <AsyncContent LoadCallbackAsync="LoadCallbackAsync">
+                <div class="accordion-content">
+                    <div class="pointer no-select full-width" @onclick="CreateNewTypeDefinition">Add new TypeDefinition</div>
+                    <ul style="list-style-type: none;">
+                        @foreach (var typeDefinition in _typeDefinitions)
+                        {
+                            <li>@typeDefinition.Name (@typeDefinition.Id)</li>
+                        }
+                    </ul>
+                </div>
+            </AsyncContent>
+        </Content>
+    </Accordion>
+</section>
+
+@code {
+    private readonly List<TypeDefinition> _typeDefinitions = new();
+
+    private async Task LoadCallbackAsync()
+    {
+        _typeDefinitions.Clear();
+        await foreach (var typeDefinition in _typeDefinitionRepository.GetTypeDefinitionsAsync())
+        {
+            _typeDefinitions.Add(typeDefinition);
+        }
+    }
+
+    private void CreateNewTypeDefinition()
+    {
+        _background.Add("Creating new typeDefinition...", async (cancellationToken, _) =>
+        {
+            var newTypeDefinition = await _typeDefinitionRepository.CreateTypeDefinitionAsync(cancellationToken, new TypeDefinition {Name = "New TypeDefinition"});
+            _typeDefinitions.Add(newTypeDefinition);
+        });
+    }
+
+}

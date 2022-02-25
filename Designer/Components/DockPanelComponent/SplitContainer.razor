@@ -1,0 +1,152 @@
+@using X39.Systems.ServiceOrchestrator.Designer.Data
+@using System.Globalization
+@if (ChildB is null)
+{
+    <div class="full-size @(SplitDirection == ESplitDirection.Vertical ? "scroll-vertical" : "scroll-horizontal")">
+        @ChildA
+    </div>
+}
+else if (ChildA is null)
+{
+    <div class="full-size @(SplitDirection == ESplitDirection.Vertical ? "scroll-vertical" : "scroll-horizontal")">
+        @ChildB
+    </div>
+}
+else
+{
+    <div @ref="_containerDiv"
+         @onmouseleave="ContainerMouseLeave"
+         @onmousemove="ContainerMouseMoveAsync"
+         @onmouseup="ContainerMouseUp"
+         class="full-size"
+         style="display: grid;
+                grid-template-@(SplitDirection == ESplitDirection.Horizontal ? "columns" : "rows"):
+                    @(_childASize.ToString(CultureInfo.InvariantCulture))fr
+                    5px
+                    @(_childBSize.ToString(CultureInfo.InvariantCulture))fr;
+                background: transparent;">
+        <div class="@(SplitDirection == ESplitDirection.Vertical ? "scroll-vertical" : "scroll-horizontal")">
+            @ChildA
+        </div>
+        <div @onmousedown="SeparatorMouseDown"
+             class="no-select"
+             style="height: 100%; width: 100%; cursor: @(SplitDirection == ESplitDirection.Vertical ? "row-resize" : "col-resize");
+                    min-width: 5px; min-height: 5px; background: black; opacity: 0.25;">
+            
+        </div>
+        <div class="@(SplitDirection == ESplitDirection.Vertical ? "scroll-vertical" : "scroll-horizontal")">
+            @ChildB
+        </div>
+    </div>
+}
+
+@code {
+    public enum ESplitDirection
+    {
+        Vertical,
+        Horizontal,
+    }
+    
+    [Parameter]
+    public ESplitDirection SplitDirection { get; set; }
+    
+    [Parameter]
+    public RenderFragment? ChildA { get; set; }
+
+    [Parameter]
+    public string InitialSplit { get; set; } = "0.5 0.5";
+    
+    [Parameter]
+    public RenderFragment? ChildB { get; set; }
+
+    private ElementReference _containerDiv;
+
+    private bool _mouseDownOnSplitter = false;
+    private bool _splitterMoving = false;
+    private (double x, double y) _mouseDownPosition;
+    private double _childASize = 0.5;
+    private double _childBSize = 0.5;
+
+    protected override void OnInitialized()
+    {
+        var splatted = InitialSplit.Split(
+            ' ',
+            StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        switch (splatted.Length)
+        {
+            case >= 2:
+            {
+                if (!double.TryParse(splatted[0], NumberStyles.Any, CultureInfo.InvariantCulture, out var childASize)
+                    || !double.TryParse(splatted[1], NumberStyles.Any, CultureInfo.InvariantCulture, out var childBSize))
+                    return;
+                _childASize = childASize;
+                _childBSize = childBSize + (1 - (childASize + childBSize));
+                break;
+            }
+            case >= 1:
+            {
+                if (!double.TryParse(splatted[0], NumberStyles.Any, CultureInfo.InvariantCulture, out var childASize))
+                    return;
+                _childASize = childASize;
+                _childBSize = 1D - _childASize;
+                break;
+            }
+        }
+    }
+
+    private void SeparatorMouseDown(MouseEventArgs obj)
+    {
+        _mouseDownPosition = (obj.PageX, obj.PageY);
+        _mouseDownOnSplitter = true;
+    }
+
+    private void ContainerMouseLeave()
+    {
+        _mouseDownOnSplitter = false;
+    }
+
+    private void ContainerMouseUp()
+    {
+        _mouseDownOnSplitter = false;
+        _splitterMoving = false;
+    }
+
+    private async Task ContainerMouseMoveAsync(MouseEventArgs obj)
+    {
+        if (!_mouseDownOnSplitter)
+            return;
+        if (!_splitterMoving)
+        {
+            var mousePosition = (x: obj.PageX, y: obj.PageY);
+            var delta = (x: _mouseDownPosition.x - mousePosition.x, y: _mouseDownPosition.y - mousePosition.y);
+            if (Math.Abs(delta.x) > 5 || Math.Abs(delta.y) > 5)
+            {
+                _splitterMoving = true;
+            }
+        }
+        if (_splitterMoving)
+        {
+            ElementSize size;
+            double relativePosition;
+            switch (SplitDirection)
+            {
+                case ESplitDirection.Horizontal:
+                    size = await _containerDiv.GetSize(_js);
+                    Console.WriteLine(size.ToString());
+                    relativePosition = obj.ClientX / size.Width;
+                    _childASize = relativePosition;
+                    _childBSize = 1D - _childASize;
+                    break;
+                case ESplitDirection.Vertical:
+                    size = await _containerDiv.GetSize(_js);
+                    Console.WriteLine(size.ToString());
+                    relativePosition = obj.ClientY / size.Height;
+                    _childASize = relativePosition;
+                    _childBSize = 1D - _childASize;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+    }
+}

@@ -1,0 +1,48 @@
+@using X39.Systems.ServiceOrchestrator.Data.Entity
+@using X39.Systems.ServiceOrchestrator.Designer.Contract.Repositories
+@inject IServiceRepository _serviceRepository
+@attribute [ToolBoxComponent]
+
+<section>
+    <Accordion>
+        <Header>
+            <h1 class="accordion-header no-select pointer full-width">Services</h1>
+        </Header>
+        <Content>
+            <AsyncContent LoadCallbackAsync="LoadCallbackAsync">
+                <div class="accordion-content">
+                    <div class="pointer no-select full-width" @onclick="CreateNewService">Add new Service</div>
+                    <ul style="list-style-type: none;">
+                        @foreach (var service in _services)
+                        {
+                            <li>@service.Name (@service.Id)</li>
+                        }
+                    </ul>
+                </div>
+            </AsyncContent>
+        </Content>
+    </Accordion>
+</section>
+
+@code {
+    private readonly List<Service> _services = new();
+
+    private async Task LoadCallbackAsync()
+    {
+        _services.Clear();
+        await foreach (var service in _serviceRepository.GetServicesAsync())
+        {
+            _services.Add(service);
+        }
+    }
+
+    private void CreateNewService()
+    {
+        _background.Add("Creating new service...", async (cancellationToken, _) =>
+        {
+            var newService = await _serviceRepository.CreateServiceAsync(cancellationToken, new Service {Name = "New Service"});
+            _services.Add(newService);
+        });
+    }
+
+}

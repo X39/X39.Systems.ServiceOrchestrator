@@ -1,0 +1,48 @@
+@using X39.Systems.ServiceOrchestrator.Data.Entity
+@using X39.Systems.ServiceOrchestrator.Designer.Contract.Repositories
+@inject IRestEndpointRepository _restEndpointRepository
+@attribute [ToolBoxComponent]
+
+<section>
+    <Accordion>
+        <Header>
+            <h1 class="accordion-header no-select pointer full-width">RestEndpoints</h1>
+        </Header>
+        <Content>
+            <AsyncContent LoadCallbackAsync="LoadCallbackAsync">
+                <div class="accordion-content">
+                    <div class="pointer no-select full-width" @onclick="CreateNewRestEndpoint">Add new RestEndpoint</div>
+                    <ul style="list-style-type: none;">
+                        @foreach (var restEndpoint in _restEndpoints)
+                        {
+                            <li>@restEndpoint.Name (@restEndpoint.Id)</li>
+                        }
+                    </ul>
+                </div>
+            </AsyncContent>
+        </Content>
+    </Accordion>
+</section>
+
+@code {
+    private readonly List<RestEndpoint> _restEndpoints = new();
+
+    private async Task LoadCallbackAsync()
+    {
+        _restEndpoints.Clear();
+        await foreach (var restEndpoint in _restEndpointRepository.GetRestEndpointsAsync())
+        {
+            _restEndpoints.Add(restEndpoint);
+        }
+    }
+
+    private void CreateNewRestEndpoint()
+    {
+        _background.Add("Creating new restEndpoint...", async (cancellationToken, _) =>
+        {
+            var newRestEndpoint = await _restEndpointRepository.CreateRestEndpointAsync(cancellationToken, new RestEndpoint {Name = "New RestEndpoint"});
+            _restEndpoints.Add(newRestEndpoint);
+        });
+    }
+
+}

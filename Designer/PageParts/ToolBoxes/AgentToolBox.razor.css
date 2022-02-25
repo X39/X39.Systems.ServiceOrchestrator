@@ -11,6 +11,7 @@
 .accordion-content {
     padding: 1rem;
     background: rgba(0, 0, 0, 0.05125);
+    overflow: auto;
 }
 
 #agents-tool-box {

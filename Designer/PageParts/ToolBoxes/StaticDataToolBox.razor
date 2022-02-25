@@ -1,0 +1,48 @@
+@using X39.Systems.ServiceOrchestrator.Data.Entity
+@using X39.Systems.ServiceOrchestrator.Designer.Contract.Repositories
+@inject IStaticDataRepository _staticDataRepository
+@attribute [ToolBoxComponent]
+
+<section>
+    <Accordion>
+        <Header>
+            <h1 class="accordion-header no-select pointer full-width">StaticDatas</h1>
+        </Header>
+        <Content>
+            <AsyncContent LoadCallbackAsync="LoadCallbackAsync">
+                <div class="accordion-content">
+                    <div class="pointer no-select full-width" @onclick="CreateNewStaticData">Add new StaticData</div>
+                    <ul style="list-style-type: none;">
+                        @foreach (var staticData in _staticDatas)
+                        {
+                            <li>@staticData.Name (@staticData.Id)</li>
+                        }
+                    </ul>
+                </div>
+            </AsyncContent>
+        </Content>
+    </Accordion>
+</section>
+
+@code {
+    private readonly List<StaticData> _staticDatas = new();
+
+    private async Task LoadCallbackAsync()
+    {
+        _staticDatas.Clear();
+        await foreach (var staticData in _staticDataRepository.GetStaticDatasAsync())
+        {
+            _staticDatas.Add(staticData);
+        }
+    }
+
+    private void CreateNewStaticData()
+    {
+        _background.Add("Creating new staticData...", async (cancellationToken, _) =>
+        {
+            var newStaticData = await _staticDataRepository.CreateStaticDataAsync(cancellationToken, new StaticData {Name = "New StaticData"});
+            _staticDatas.Add(newStaticData);
+        });
+    }
+
+}

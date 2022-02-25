@@ -1,7 +1,10 @@
 @page "/"
-
 <PageTitle>Index</PageTitle>
-<Navigation></Navigation>
-<ToolBar></ToolBar>
-
-<h1>Clean Blazor</h1>
+<SplitContainer SplitDirection="SplitContainer.ESplitDirection.Horizontal" InitialSplit="0.25 0.75">
+    <ChildA>
+        <ToolBar></ToolBar>
+    </ChildA>
+    <ChildB>
+        <h1>Clean Blazor</h1>
+    </ChildB>
+</SplitContainer>

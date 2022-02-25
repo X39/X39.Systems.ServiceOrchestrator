@@ -1,0 +1,48 @@
+@using X39.Systems.ServiceOrchestrator.Data.Entity
+@using X39.Systems.ServiceOrchestrator.Designer.Contract.Repositories
+@inject IValidatorRepository _validatorRepository
+@attribute [ToolBoxComponent]
+
+<section>
+    <Accordion>
+        <Header>
+            <h1 class="accordion-header no-select pointer full-width">Validators</h1>
+        </Header>
+        <Content>
+            <AsyncContent LoadCallbackAsync="LoadCallbackAsync">
+                <div class="accordion-content">
+                    <div class="pointer no-select full-width" @onclick="CreateNewValidator">Add new Validator</div>
+                    <ul style="list-style-type: none;">
+                        @foreach (var validator in _validators)
+                        {
+                            <li>@validator.Name (@validator.Id)</li>
+                        }
+                    </ul>
+                </div>
+            </AsyncContent>
+        </Content>
+    </Accordion>
+</section>
+
+@code {
+    private readonly List<Validator> _validators = new();
+
+    private async Task LoadCallbackAsync()
+    {
+        _validators.Clear();
+        await foreach (var validator in _validatorRepository.GetValidatorsAsync())
+        {
+            _validators.Add(validator);
+        }
+    }
+
+    private void CreateNewValidator()
+    {
+        _background.Add("Creating new validator...", async (cancellationToken, _) =>
+        {
+            var newValidator = await _validatorRepository.CreateValidatorAsync(cancellationToken, new Validator {Name = "New Validator"});
+            _validators.Add(newValidator);
+        });
+    }
+
+}

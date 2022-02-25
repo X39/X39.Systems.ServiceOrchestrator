@@ -24,10 +24,4 @@
       <ProjectReference Include="..\Designer.Contract\Designer.Contract.csproj" />
       <ProjectReference Include="..\Designer.Impl\Designer.Impl.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Attributes" />
-    </ItemGroup>
-
-
 </Project>

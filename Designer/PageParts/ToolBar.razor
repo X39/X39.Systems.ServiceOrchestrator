@@ -1,7 +1,28 @@
+@using System.Reflection
+@using X39.Util
+@using System.Diagnostics
 <aside>
-    <AgentsToolBox></AgentsToolBox>
+    @foreach (var type in _types)
+    {
+        <DynamicComponent Type="@type"></DynamicComponent>
+    }
 </aside>
 
 @code {
-    
+    private readonly List<Type> _types = new();
+    protected override void OnInitialized()
+    {
+        var types = typeof(ToolBar).Assembly
+            .GetTypes()
+            .Where((q) => q.GetCustomAttribute<ToolBoxComponentAttribute>() is not null);
+        _types.AddRange(types);
+        base.OnInitialized();
+
+        // ToDo: Rework in proper DockPanel
+        // Task.Run(async () =>
+        // {
+        //     await Task.Delay(2000);
+        //     Console.WriteLine(ElementReferenceOfDynamicComponent.Instance?.GetType().FullName); // --> XXXToolBox
+        // });
+    }
 }

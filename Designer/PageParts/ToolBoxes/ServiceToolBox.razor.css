@@ -1,0 +1,19 @@
+.accordion-header {
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.125);
+}
+
+.accordion-header:hover {
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.accordion-content {
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.05125);
+    overflow: auto;
+}
+
+#agents-tool-box {
+    background: rebeccapurple;
+}

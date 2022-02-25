@@ -10,6 +10,19 @@
 .half-height {
     height: 50%;
 }
+.full-size {
+    width: 100%;
+    height: 100%;
+}
+.scroll-horizontal {
+    overflow-x: auto;
+}
+.scroll-vertical {
+    overflow-y: auto;
+}
+.scroll {
+    overflow: auto;
+}
 .pointer {
     cursor: pointer;
 }
