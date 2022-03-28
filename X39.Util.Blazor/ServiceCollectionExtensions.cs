@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using X39.Util.Blazor.Attributes;
@@ -8,7 +9,28 @@ namespace X39.Util.Blazor;
 [PublicAPI]
 public static class ServiceCollectionExtensions
 {
-    public static void AddMarkedSingletonsFrom(this IServiceCollection services, Assembly assembly)
+    /// <summary>
+    /// Adds all classes with <see cref="SingletonAttribute"/> set of the <paramref name="assembly"/>
+    /// to the <paramref name="services"/> as singleton.
+    /// </summary>
+    /// <remarks>
+    /// <list type="bullet">
+    ///     <item>
+    ///         Given <see cref="SingletonAttribute.ConditionProperty"/> or
+    ///         <see cref="SingletonAttribute.ConditionMethod"/> is set,
+    ///         it will be evaluated.
+    ///         If it resolves to true, it will be added.
+    ///         Otherwise it won't.
+    ///     </item>
+    ///     <item>
+    ///         This method will run static constructors on types having <see cref="SingletonAttribute"/> set.
+    ///     </item>
+    /// </list>
+    /// </remarks>
+    /// <param name="services"></param>
+    /// <param name="assembly"></param>
+    /// <exception cref="Exception"></exception>
+    public static void AddAttributedSingletonsOf(this IServiceCollection services, Assembly assembly)
     {
         static IEnumerable<(Type ServiceType, Type ImplementationType)> GetSingletonTypeTuples(Assembly assembly)
         {
@@ -20,6 +42,7 @@ public static class ServiceCollectionExtensions
                     continue;
                 if (!type.IsSealed)
                     throw new Exception($"The type {type.FullName()} is not sealed.");
+                RuntimeHelpers.RunClassConstructor(type.TypeHandle);
                 if (attribute.ConditionMethod is not null)
                 {
                     var conditionMethods = type

@@ -1,0 +1,23 @@
+@inject ITabService _tabService
+<TabControl Tabs="@_tabService.Tabs"/>
+
+@code {
+
+    private TabControl _tabControl = null!;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _tabService.TabAdded += TabServiceOnTabAdded;
+        _tabService.TabRemoved += TabServiceOnTabRemoved;
+    }
+
+    private void TabServiceOnTabAdded(object? sender, ITab e)
+    {
+        StateHasChanged();
+    }
+    private void TabServiceOnTabRemoved(object? sender, ITab e)
+    {
+        StateHasChanged();
+    }
+
+}

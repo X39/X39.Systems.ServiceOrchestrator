@@ -14,4 +14,9 @@
       <ProjectReference Include="..\X39.Util.Blazor\X39.Util.Blazor.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Repositories" />
+      <Folder Include="Services" />
+    </ItemGroup>
+
 </Project>

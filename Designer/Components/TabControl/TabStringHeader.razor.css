@@ -1,0 +1,10 @@
+.TabHeader {
+    padding: 1em;
+    border-bottom: 1em #25ABC7 solid;
+    user-select: none;
+    cursor: pointer;
+}
+
+.TabSelected {
+    border-bottom: 1em #202B44 solid;
+}

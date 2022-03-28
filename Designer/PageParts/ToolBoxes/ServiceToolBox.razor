@@ -1,6 +1,8 @@
 @using X39.Systems.ServiceOrchestrator.Data.Entity
-@using X39.Systems.ServiceOrchestrator.Designer.Contract.Repositories
+@using X39.Systems.ServiceOrchestrator.Designer.Repositories
+@using X39.Systems.ServiceOrchestrator.Designer.Services
 @inject IServiceRepository _serviceRepository
+@inject ITabService _tabService
 @attribute [ToolBoxComponent]
 
 <section>
@@ -15,7 +17,7 @@
                     <ul style="list-style-type: none;">
                         @foreach (var service in _services)
                         {
-                            <li>@service.Name (@service.Id)</li>
+                            <li @ondblclick="() => ServiceDoubleClicked(service)">@service.Name (@service.Id)</li>
                         }
                     </ul>
                 </div>
@@ -42,6 +44,15 @@
         {
             var newService = await _serviceRepository.CreateServiceAsync(cancellationToken, new Service {Name = "New Service"});
             _services.Add(newService);
+        });
+    }
+
+    private void ServiceDoubleClicked(Service service)
+    {
+        _tabService.AddTab(new Tab(typeof(TabStringHeader), typeof(DesignTab))
+        {
+            HeaderParameters = { {nameof(TabStringHeader.Text), service.Name} },
+            ContentParameters = {{nameof(DesignTab.Service), service} }
         });
     }
 

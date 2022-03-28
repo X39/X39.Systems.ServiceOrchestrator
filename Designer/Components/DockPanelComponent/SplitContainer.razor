@@ -133,14 +133,16 @@ else
                 case ESplitDirection.Horizontal:
                     size = await _containerDiv.GetSize(_js);
                     Console.WriteLine(size.ToString());
-                    relativePosition = obj.ClientX / size.Width;
+                    var x = obj.ClientX - size.Left;
+                    relativePosition = x / size.Width;
                     _childASize = relativePosition;
                     _childBSize = 1D - _childASize;
                     break;
                 case ESplitDirection.Vertical:
                     size = await _containerDiv.GetSize(_js);
                     Console.WriteLine(size.ToString());
-                    relativePosition = obj.ClientY / size.Height;
+                    var y = obj.ClientY - size.Top;
+                    relativePosition = y / size.Height;
                     _childASize = relativePosition;
                     _childBSize = 1D - _childASize;
                     break;

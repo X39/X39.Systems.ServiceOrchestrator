@@ -1,0 +1,33 @@
+@using System.ComponentModel.DataAnnotations
+<div class="TabContainer">
+    <div class="TabHeaders">
+        @foreach (var (tab, index) in Tabs.Select((tab, index) => (tab, index)))
+        {
+            var parameters = tab.HeaderParameters is null
+                ? new Dictionary<string, object>()
+                : new Dictionary<string, object>(tab.HeaderParameters);
+            parameters[IsTabSelectedPropertyName] = TabIndex == index;
+            <div @onclick="() => TabIndex = index">
+                <DynamicComponent Type="tab.HeaderComponentType" Parameters="parameters"></DynamicComponent>
+            </div>
+        }
+    </div>
+    <div class="TabContent">
+        @if (Tabs.Count > TabIndex && TabIndex >= 0)
+        {
+            var tab = Tabs.ElementAt(TabIndex);
+            <DynamicComponent Type="tab.ContentComponentType" Parameters="tab.ContentParameters"></DynamicComponent>
+        }
+    </div>
+</div>
+
+@code {
+    public const string IsTabSelectedPropertyName = "IsTabSelected";
+
+    public int TabIndex { get; set; } = 0;
+
+    [Parameter]
+    [EditorRequired]
+    [Required]
+    public IReadOnlyCollection<ITab> Tabs { get; set; } = ArraySegment<ITab>.Empty;
+}

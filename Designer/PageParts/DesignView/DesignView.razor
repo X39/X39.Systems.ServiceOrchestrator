@@ -1,0 +1,60 @@
+@using Blazor.Diagrams.Core
+@using Blazor.Diagrams.Core.Geometry
+@using Blazor.Diagrams.Core.Models
+@using Blazor.Diagrams.Components;
+@using X39.Systems.ServiceOrchestrator.Data.Entity
+<CascadingValue Value="_diagram">
+    <DiagramCanvas></DiagramCanvas>
+</CascadingValue>
+
+@code {
+
+
+    private const int GridSize = 10;
+    private readonly Diagram _diagram = new(new DiagramOptions
+    {
+        DeleteKey = "Delete",
+        AllowMultiSelection = true,
+        AllowPanning = true,
+        GridSize = GridSize,
+        Links = new DiagramLinkOptions
+        {
+            DefaultPathGenerator = PathGenerators.Straight,
+            DefaultRouter = Routers.Orthogonal,
+        },
+        Zoom = new DiagramZoomOptions
+        {
+            Minimum = 0.125,
+            Maximum = 1,
+            Inverse = true,
+        },
+    });
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Setup();
+    }
+    
+    private void Setup()
+    {
+        var node1 = NewNode(50, 50);
+        var node2 = NewNode(300, 300);
+        var node3 = NewNode(300, 50);
+        _diagram.Nodes.Add(node1);
+        _diagram.Nodes.Add(node2);
+        _diagram.Nodes.Add(node3);
+        _diagram.Links.Add(new LinkModel(node1.GetPort(PortAlignment.Right), node2.GetPort(PortAlignment.Left)));
+    }
+
+    private NodeModel NewNode(double x, double y)
+    {
+        var node = new NodeModel(new Point(x, y));
+        node.AddPort(PortAlignment.Bottom);
+        node.AddPort(PortAlignment.Top);
+        node.AddPort(PortAlignment.Left);
+        node.AddPort(PortAlignment.Right);
+        return node;
+    }
+
+}

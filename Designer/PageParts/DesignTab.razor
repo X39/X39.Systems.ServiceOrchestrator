@@ -1,0 +1,24 @@
+@* ReSharper disable once RedundantUsingDirective *@
+@using X39.Systems.ServiceOrchestrator.Designer.PageParts.DesignView
+@* ReSharper disable once RedundantUsingDirective *@
+@using X39.Systems.ServiceOrchestrator.Designer.PageParts.PropertyView
+@using X39.Systems.ServiceOrchestrator.Data.Entity
+@using System.ComponentModel.DataAnnotations
+<h1>@Service.Name</h1>
+<h2>@Service.Id</h2>
+<SplitContainer SplitDirection="SplitContainer.ESplitDirection.Horizontal" InitialSplit="0.75 0.25">
+    <ChildA>
+        <DesignView/>
+    </ChildA>
+    <ChildB>
+        <PropertyView/>
+    </ChildB>
+</SplitContainer>
+
+@code {
+
+    [Parameter]
+    [EditorRequired]
+    [Required]
+    public Service Service { get; set; }
+}

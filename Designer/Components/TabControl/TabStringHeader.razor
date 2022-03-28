@@ -1,0 +1,14 @@
+@using System.ComponentModel.DataAnnotations
+<div class="TabHeader @(IsTabSelected ? "TabSelected" : string.Empty)">
+    <span>@Text</span>
+</div>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    [Required]
+    public string Text { get; set; } = string.Empty;
+    
+    [Parameter]
+    public bool IsTabSelected { get; set; }
+}

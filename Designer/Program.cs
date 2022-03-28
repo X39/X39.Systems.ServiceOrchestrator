@@ -3,14 +3,11 @@ using Blazored.LocalStorage;
 using X39.Systems.ServiceOrchestrator.Designer;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using X39.Systems.ServiceOrchestrator.Designer.Contract.Services;
-using X39.Systems.ServiceOrchestrator.Designer.Impl;
-using X39.Systems.ServiceOrchestrator.Designer.Impl.Services;
 using X39.Util.Blazor;
 
 var builder = WebAssemblyHostBuilder
     .CreateDefault(args);
-builder.Services.AddMarkedSingletonsFrom(typeof(AssemblyReferenceType).Assembly);
+builder.Services.AddAttributedSingletonsOf(typeof(Program).Assembly);
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddLogging();
 builder.Services.AddLocalization((options) =>
@@ -22,5 +19,4 @@ builder.Services.AddScoped(sp => new HttpClient {BaseAddress = new Uri(builder.H
 
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
-
 await builder.Build().RunAsync();

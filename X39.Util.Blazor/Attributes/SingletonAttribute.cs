@@ -6,8 +6,43 @@ namespace X39.Util.Blazor.Attributes;
 /// <summary>
 /// Special attribute to mark a class as singleton.
 /// </summary>
+/// <remarks>
+/// This attribute cannot be inherited.
+/// </remarks>
+/// <example>
+/// <code>
+///     public interface IMyConditionalService
+///     {
+///         bool SomeFunc();
+///     }
+///     [Singleton(ServiceType = typeof(IMyConditionalService), ConditionProperty = nameof(IsLoaded))]
+///     public class MyConditionalService : IMyConditionalService
+///     {
+///     #if DEBUG
+///         private static bool IsLoaded => true;
+///     #else
+///         private static bool IsLoaded => false;
+///     #endif
+///         public bool SomeFunc(){
+///             return true;
+///         }
+///     }
+///     [Singleton(ServiceType = typeof(IMyConditionalService), ConditionProperty = nameof(IsLoaded))]
+///     public class MyConditionalServiceMock : IMyConditionalService
+///     {
+///     #if DEBUG
+///         private static bool IsLoaded => false;
+///     #else
+///         private static bool IsLoaded => true;
+///     #endif
+///         public bool SomeFunc(){
+///             return true;
+///         }
+///     }
+/// </code>
+/// </example>
 [PublicAPI]
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
 public class SingletonAttribute : Attribute
 {
     /// <summary>
