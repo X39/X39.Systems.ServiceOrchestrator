@@ -3,7 +3,7 @@ using X39.Systems.ServiceOrchestrator.Data.UtilityInterfaces;
 
 namespace X39.Systems.ServiceOrchestrator.Data.Entity;
 
-public readonly record struct StaticData : IOutputEntity
+public record StaticData : IOutputEntity
 {
     public string Name { get; init; } = string.Empty;
     public Guid Id { get; init; }

@@ -1,4 +1,5 @@
 @using X39.Systems.ServiceOrchestrator.Data.Entity
+@using X39.Systems.ServiceOrchestrator.Designer.PageParts.DesignView
 @using X39.Systems.ServiceOrchestrator.Designer.Repositories
 @using X39.Systems.ServiceOrchestrator.Designer.Services
 @inject IServiceRepository _serviceRepository
@@ -6,7 +7,7 @@
 @attribute [ToolBoxComponent]
 
 <section>
-    <Accordion>
+    <Expander>
         <Header>
             <h1 class="accordion-header no-select pointer full-width">Services</h1>
         </Header>
@@ -23,7 +24,7 @@
                 </div>
             </AsyncContent>
         </Content>
-    </Accordion>
+    </Expander>
 </section>
 
 @code {
@@ -52,7 +53,7 @@
         _tabService.AddTab(new Tab(typeof(TabStringHeader), typeof(DesignTab))
         {
             HeaderParameters = { {nameof(TabStringHeader.Text), service.Name} },
-            ContentParameters = {{nameof(DesignTab.Service), service} }
+            ContentParameters = {{nameof(DesignTab.DataContext), new ServiceDataContext(service)} }
         });
     }
 
