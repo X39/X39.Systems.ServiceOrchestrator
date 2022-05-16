@@ -16,7 +16,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
         <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.2" />
-        <PackageReference Include="X39.Util" Version="1.0.0.14" />
+        <PackageReference Include="X39.Util" Version="1.0.0.21" />
         <PackageReference Include="Z.Blazor.Diagrams" Version="2.1.6" />
         <PackageReference Include="Z.Blazor.Diagrams.Core" Version="2.1.6" />
     </ItemGroup>

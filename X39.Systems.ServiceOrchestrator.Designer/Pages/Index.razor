@@ -1,0 +1,20 @@
+﻿@page "/"
+@inject TabService TabService
+
+<PageTitle>Service Orchestrator</PageTitle>
+<div Style="padding: 24px 0 0 24px; height: 100%;">
+    <MudGrid Style="height: 100%; width: 100%;">
+        <MudItem xs="2">
+            <Index_Data/>
+        </MudItem>
+        <MudItem xs="8">
+            <Index_Tabs/>
+        </MudItem>
+        <MudItem xs="2">
+            <Index_Properties/>
+        </MudItem>
+    </MudGrid>
+</div>
+
+@code {
+}

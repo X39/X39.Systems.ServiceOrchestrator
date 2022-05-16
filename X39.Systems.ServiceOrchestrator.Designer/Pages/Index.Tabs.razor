@@ -1,0 +1,51 @@
+@using X39.Systems.ServiceOrchestrator.Designer.Data
+@inject TabService TabService
+<MudDynamicTabs Elevation="4"
+                Style="height: 100%"
+                Rounded="true"
+                ApplyEffectsToContainer="true"
+                PanelClass="px-4 py-6"
+                AddTab="AddTabCallback"
+                CloseTab="CloseTabCallbackAsync"
+                @bind-ActivePanelIndex="_index"
+                AddIconToolTip="Click here to add a new tab"
+                CloseIconToolTip="Close this tab. All data will be lost">
+    @foreach (var tab in TabService.Tabs)
+    {
+        <MudTabPanel Icon="@tab.TabIcon" Text="@tab.TabName" Tag="@(new TabTag(tab.Guid, tab))">
+            <DynamicComponent Type="@tab.TabComponentType" Parameters="@tab.TabComponentParameters"/>
+        </MudTabPanel>
+    }
+</MudDynamicTabs>
+
+@code {
+
+    private record struct TabTag(Guid Guid, ITabHost TabHost);
+
+    private int _index;
+    private bool _updateIndex;
+
+    private void AddTabCallback()
+    {
+        _updateIndex = true;
+    }
+
+    private async Task CloseTabCallbackAsync(MudTabPanel mudTabPanel)
+    {
+        if (mudTabPanel.Tag is not TabTag tabTag)
+            throw new Exception("MudTabPanel.Tag is not of type TabTag.");
+        var tabView = TabService.Tabs.FirstOrDefault(tabView => tabView.Guid == tabTag.Guid);
+        if (tabView is not null)
+        {
+            await TabService.RemoveTabAsync(tabTag.TabHost);
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (!_updateIndex) return;
+        _index = TabService.Tabs.Count - 1;
+        StateHasChanged();
+        _updateIndex = false;
+    }
+}

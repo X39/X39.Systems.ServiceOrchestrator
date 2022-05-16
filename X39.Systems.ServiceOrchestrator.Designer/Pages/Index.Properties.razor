@@ -1,0 +1,18 @@
+@inject TabService TabService
+@inject SelectionService SelectionService
+<MudPaper Height="100%">
+    <MudText Align="Align.Center">Properties</MudText>
+    <MudDivider/>
+    <MudExpansionPanels MultiExpansion="true">
+        <MudExpansionPanel Icon="@Icons.Filled.SnippetFolder" Text="Active Service">
+            Service Properties...
+        </MudExpansionPanel>
+        <MudExpansionPanel Icon="@Icons.Filled.Settings" Text="Selected Node">
+            Settings...
+        </MudExpansionPanel>
+    </MudExpansionPanels>
+</MudPaper>
+
+@code {
+
+}

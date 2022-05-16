@@ -1,0 +1,20 @@
+@inject TabService TabService
+<MudPaper Height="100%">
+    <MudText Align="Align.Center">Data</MudText>
+    <MudDivider/>
+    <MudExpansionPanels MultiExpansion="true">
+        <MudExpansionPanel Icon="@Icons.Filled.Api" Text="Actors">
+            Actors...
+        </MudExpansionPanel>
+        <MudExpansionPanel Icon="@Icons.Filled.SnippetFolder" Text="Services">
+            Services...
+        </MudExpansionPanel>
+        <MudExpansionPanel Icon="@Icons.Filled.Insights" Text="Tools" Disabled="@(!TabService.Tabs.Any())">
+            Nodes...
+        </MudExpansionPanel>
+    </MudExpansionPanels>
+</MudPaper>
+
+@code {
+
+}

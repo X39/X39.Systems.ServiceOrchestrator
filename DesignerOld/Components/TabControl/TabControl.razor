@@ -6,7 +6,7 @@
             var parameters = tab.HeaderParameters is null
                 ? new Dictionary<string, object>()
                 : new Dictionary<string, object>(tab.HeaderParameters);
-            parameters[IsTabSelectedPropertyName] = TabIndex == index;
+            parameters[nameof(ITabHeaderComponent.IsTabSelected)] = TabIndex == index;
             <div @onclick="() => TabIndex = index">
                 <DynamicComponent Type="tab.HeaderComponentType" Parameters="parameters"></DynamicComponent>
             </div>
@@ -16,15 +16,14 @@
         @if (Tabs.Count > TabIndex && TabIndex >= 0)
         {
             var tab = Tabs.ElementAt(TabIndex);
-            <DynamicComponent Type="tab.ContentComponentType" Parameters="tab.ContentParameters"></DynamicComponent>
+            <DynamicComponent @key="tab" Type="tab.ContentComponentType" Parameters="tab.ContentParameters"></DynamicComponent>
         }
     </div>
 </div>
 
 @code {
-    public const string IsTabSelectedPropertyName = "IsTabSelected";
 
-    public int TabIndex { get; set; } = 0;
+    public int TabIndex { get; set; }
 
     [Parameter]
     [EditorRequired]

@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.4" PrivateAssets="all" />
+        <PackageReference Include="MudBlazor" Version="6.0.10" />
+        <PackageReference Include="X39.Util" Version="1.0.0.21" />
+        <PackageReference Include="Z.Blazor.Diagrams" Version="2.1.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\X39.Util.Blazor\X39.Util.Blazor.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Update="Pages\Index.Tabs.razor">
+        <DependentUpon>Index.razor</DependentUpon>
+      </Content>
+      <Content Update="Pages\Index.Data.razor">
+        <DependentUpon>Index.razor</DependentUpon>
+      </Content>
+      <Content Update="Pages\Index.Properties.razor">
+        <DependentUpon>Index.razor</DependentUpon>
+      </Content>
+    </ItemGroup>
+
+
+</Project>

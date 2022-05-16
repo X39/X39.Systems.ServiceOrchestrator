@@ -13,7 +13,7 @@
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
       <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.16.0" />
-      <PackageReference Include="X39.Util" Version="1.0.0.15" />
+      <PackageReference Include="X39.Util" Version="1.0.0.21" />
     </ItemGroup>
 
 </Project>
