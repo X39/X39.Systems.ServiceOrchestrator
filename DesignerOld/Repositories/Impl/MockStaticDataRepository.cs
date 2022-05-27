@@ -15,10 +15,10 @@ public sealed class StaticDataRepository : IStaticDataRepository
     // ReSharper disable once ArrangeObjectCreationWhenTypeEvident
     private readonly List<StaticData> _data = new List<StaticData>()
     {
-        new() {Id = Guid.NewGuid(), Name = "StaticData 1"},
-        new() {Id = Guid.NewGuid(), Name = "StaticData 2"},
-        new() {Id = Guid.NewGuid(), Name = "StaticData 3"},
-        new() {Id = Guid.NewGuid(), Name = "StaticData 4"},
+        new() {Guid = Guid.NewGuid(), Name = "StaticData 1"},
+        new() {Guid = Guid.NewGuid(), Name = "StaticData 2"},
+        new() {Guid = Guid.NewGuid(), Name = "StaticData 3"},
+        new() {Guid = Guid.NewGuid(), Name = "StaticData 4"},
     };
 
     public async IAsyncEnumerable<StaticData> GetStaticDatasAsync()
@@ -29,7 +29,7 @@ public sealed class StaticDataRepository : IStaticDataRepository
 
     public Task<StaticData> CreateStaticDataAsync(CancellationToken cancellationToken, StaticData staticData)
     {
-        staticData = staticData with {Id = Guid.NewGuid()};
+        staticData = staticData with {Guid = Guid.NewGuid()};
         _data.Add(staticData);
         return Task.FromResult(staticData);
     }

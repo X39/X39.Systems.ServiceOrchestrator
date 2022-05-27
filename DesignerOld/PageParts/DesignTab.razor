@@ -4,9 +4,9 @@
 @using X39.Systems.ServiceOrchestrator.Designer.PageParts.PropertyView
 @using X39.Systems.ServiceOrchestrator.Data.Entity
 @using System.ComponentModel.DataAnnotations
-<h1>@DataContext.Service.Name</h1>
-<h2>@DataContext.Service.Id</h2>
-<h2>@DataContext.Service.Id</h2>
+<h1>@DataContext.Orchestration.Title</h1>
+<h2>@DataContext.Orchestration.Guid</h2>
+<h2>@DataContext.Orchestration.Guid</h2>
 <SplitContainer SplitDirection="SplitContainer.ESplitDirection.Horizontal" InitialSplit="0.75 0.25">
     <ChildA>
         <DesignView DataContext="DataContext"/>

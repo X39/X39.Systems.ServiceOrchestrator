@@ -1,6 +1,6 @@
 namespace X39.Systems.ServiceOrchestrator.Data.UtilityInterfaces;
 
-public interface IHasId
+public interface IHasTitle
 {
-    Guid Id { get; }
+    string Title { get; }
 }

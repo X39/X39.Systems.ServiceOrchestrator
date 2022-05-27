@@ -27,16 +27,16 @@ public class ServiceDataContext : INotifyPropertyChanged
 
     #region Properties
 
-    public Service Service
+    public Orchestration Orchestration
     {
-        get => _service;
+        get => _orchestration;
         set
         {
-            _service = value;
+            _orchestration = value;
             RaisePropertyChanged();
         }
     }
-    private Service _service;
+    private Orchestration _orchestration;
 
     #endregion
 
@@ -59,9 +59,9 @@ public class ServiceDataContext : INotifyPropertyChanged
         },
     });
 
-    public ServiceDataContext(Service service)
+    public ServiceDataContext(Orchestration orchestration)
     {
-        _service = service;
+        _orchestration = orchestration;
         Setup();
     }
 

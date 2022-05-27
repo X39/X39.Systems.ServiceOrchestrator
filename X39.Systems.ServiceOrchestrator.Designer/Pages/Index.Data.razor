@@ -1,20 +1,86 @@
+@using X39.Systems.ServiceOrchestrator.Data.Entity
+@using X39.Systems.ServiceOrchestrator.Designer.Services.Repositories
+@using X39.Systems.ServiceOrchestrator.Designer.Tabs.OrchestrationTab
 @inject TabService TabService
-<MudPaper Height="100%">
+@inject OrchestrationRepository OrchestrationRepository
+<MudPaper Class="mud-height-full mud-width-full">
     <MudText Align="Align.Center">Data</MudText>
     <MudDivider/>
     <MudExpansionPanels MultiExpansion="true">
-        <MudExpansionPanel Icon="@Icons.Filled.Api" Text="Actors">
-            Actors...
+        <MudExpansionPanel Icon="@Icons.Filled.Apps" Text="Code">
+            Code...
         </MudExpansionPanel>
-        <MudExpansionPanel Icon="@Icons.Filled.SnippetFolder" Text="Services">
-            Services...
+        <MudExpansionPanel Icon="@Icons.Filled.Pages" Text="Orchestrations">
+            <MudIconButton Icon="@Icons.Filled.Add" OnClick="CreateOrchestration"/>
+            <MudIconButton Icon="@Icons.Filled.Refresh" OnClick="RefreshServicesClick"/>
+            <MudList Clickable="true" SelectedValueChanged="SelectedServiceChanged">
+                @foreach (var orchestration in _orchestrations)
+                {
+                    <MudListItem Value="@orchestration" Text="@orchestration.Title"/>
+                }
+            </MudList>
         </MudExpansionPanel>
-        <MudExpansionPanel Icon="@Icons.Filled.Insights" Text="Tools" Disabled="@(!TabService.Tabs.Any())">
+        <MudExpansionPanel Icon="@Icons.Filled.Api" Text="Tools" Disabled="@(!TabService.Tabs.Any())">
             Nodes...
         </MudExpansionPanel>
     </MudExpansionPanels>
 </MudPaper>
 
 @code {
+    private readonly List<Orchestration> _orchestrations = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReloadServicesAsync();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task ReloadServicesAsync()
+    {
+        _orchestrations.Clear();
+        await foreach (var service in OrchestrationRepository.GetAll())
+        {
+            _orchestrations.Add(service);
+        }
+    }
+
+    private void CreateOrchestration()
+    {
+        Progress.Run(async (context, cancellationToken) =>
+        {
+            context.IsIndeterminate = false;
+            context.MaxValue = 100;
+            context.MinValue = 1;
+            for (int i = 0; i < 100; i++)
+            {
+                context.Value++;
+                await Task.Delay(TimeSpan.FromMilliseconds(10), cancellationToken);
+            }
+            _orchestrations.Add(new Orchestration
+            {
+                Guid = Guid.NewGuid(),
+                Title = $"Orchestration {_orchestrations.Count + 1}",
+            });
+            StateHasChanged();
+        });
+    }
+
+    private void RefreshServicesClick()
+    {
+        _ = ReloadServicesAsync();
+    }
+
+    private async Task SelectedServiceChanged(object obj)
+    {
+        if (obj is not Orchestration service)
+            throw new Exception("Object is not a service.");
+        var existing = TabService.Tabs.FirstOrDefault((q) => q.Guid == service.Guid);
+        if (existing is null)
+        {
+            existing = new OrchestrationTab(service);
+            await TabService.AddTabAsync(existing);
+        }
+        await TabService.FocusAsync(existing);
+    }
 
 }

@@ -13,25 +13,25 @@ public sealed class ServiceRepository : IServiceRepository
 #endif
 
     // ReSharper disable once ArrangeObjectCreationWhenTypeEvident
-    private readonly List<Service> _data = new List<Service>()
+    private readonly List<Orchestration> _data = new List<Orchestration>()
     {
-        new() {Id = Guid.NewGuid(), Name = "Service 1"},
-        new() {Id = Guid.NewGuid(), Name = "Service 2"},
-        new() {Id = Guid.NewGuid(), Name = "Service 3"},
-        new() {Id = Guid.NewGuid(), Name = "Service 4"},
+        new() {Guid = Guid.NewGuid(), Title = "Service 1"},
+        new() {Guid = Guid.NewGuid(), Title = "Service 2"},
+        new() {Guid = Guid.NewGuid(), Title = "Service 3"},
+        new() {Guid = Guid.NewGuid(), Title = "Service 4"},
     };
 
-    public async IAsyncEnumerable<Service> GetServicesAsync()
+    public async IAsyncEnumerable<Orchestration> GetServicesAsync()
     {
         foreach (var service in _data)
             yield return service;
     }
 
-    public Task<Service> CreateServiceAsync(CancellationToken cancellationToken, Service service)
+    public Task<Orchestration> CreateServiceAsync(CancellationToken cancellationToken, Orchestration orchestration)
     {
-        service = service with {Id = Guid.NewGuid()};
-        _data.Add(service);
-        return Task.FromResult(service);
+        orchestration = orchestration with {Guid = Guid.NewGuid()};
+        _data.Add(orchestration);
+        return Task.FromResult(orchestration);
     }
 }
 #pragma warning restore CS1998

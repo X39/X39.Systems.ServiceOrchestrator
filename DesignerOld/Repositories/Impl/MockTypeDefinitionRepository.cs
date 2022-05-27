@@ -15,10 +15,10 @@ public sealed class TypeDefinitionRepository : ITypeDefinitionRepository
     // ReSharper disable once ArrangeObjectCreationWhenTypeEvident
     private readonly List<TypeDefinition> _data = new List<TypeDefinition>()
     {
-        new() {Id = Guid.NewGuid(), Name = "TypeDefinition 1"},
-        new() {Id = Guid.NewGuid(), Name = "TypeDefinition 2"},
-        new() {Id = Guid.NewGuid(), Name = "TypeDefinition 3"},
-        new() {Id = Guid.NewGuid(), Name = "TypeDefinition 4"},
+        new() {Guid = Guid.NewGuid(), Name = "TypeDefinition 1"},
+        new() {Guid = Guid.NewGuid(), Name = "TypeDefinition 2"},
+        new() {Guid = Guid.NewGuid(), Name = "TypeDefinition 3"},
+        new() {Guid = Guid.NewGuid(), Name = "TypeDefinition 4"},
     };
 
     public async IAsyncEnumerable<TypeDefinition> GetTypeDefinitionsAsync()
@@ -29,7 +29,7 @@ public sealed class TypeDefinitionRepository : ITypeDefinitionRepository
 
     public Task<TypeDefinition> CreateTypeDefinitionAsync(CancellationToken cancellationToken, TypeDefinition typeDefinition)
     {
-        typeDefinition = typeDefinition with {Id = Guid.NewGuid()};
+        typeDefinition = typeDefinition with {Guid = Guid.NewGuid()};
         _data.Add(typeDefinition);
         return Task.FromResult(typeDefinition);
     }

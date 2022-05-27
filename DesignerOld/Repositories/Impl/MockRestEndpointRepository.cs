@@ -15,10 +15,10 @@ public sealed class RestEndpointRepository : IRestEndpointRepository
     // ReSharper disable once ArrangeObjectCreationWhenTypeEvident
     private readonly List<RestEndpoint> _data = new List<RestEndpoint>()
     {
-        new() {Id = Guid.NewGuid(), Name = "RestEndpoint 1"},
-        new() {Id = Guid.NewGuid(), Name = "RestEndpoint 2"},
-        new() {Id = Guid.NewGuid(), Name = "RestEndpoint 3"},
-        new() {Id = Guid.NewGuid(), Name = "RestEndpoint 4"},
+        new() {Guid = Guid.NewGuid(), Name = "RestEndpoint 1"},
+        new() {Guid = Guid.NewGuid(), Name = "RestEndpoint 2"},
+        new() {Guid = Guid.NewGuid(), Name = "RestEndpoint 3"},
+        new() {Guid = Guid.NewGuid(), Name = "RestEndpoint 4"},
     };
 
     public async IAsyncEnumerable<RestEndpoint> GetRestEndpointsAsync()
@@ -29,7 +29,7 @@ public sealed class RestEndpointRepository : IRestEndpointRepository
 
     public Task<RestEndpoint> CreateRestEndpointAsync(CancellationToken cancellationToken, RestEndpoint restEndpoint)
     {
-        restEndpoint = restEndpoint with {Id = Guid.NewGuid()};
+        restEndpoint = restEndpoint with {Guid = Guid.NewGuid()};
         _data.Add(restEndpoint);
         return Task.FromResult(restEndpoint);
     }

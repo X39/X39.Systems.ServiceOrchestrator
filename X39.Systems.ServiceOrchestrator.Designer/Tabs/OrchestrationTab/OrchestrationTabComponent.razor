@@ -1,0 +1,70 @@
+@using Blazor.Diagrams.Core
+@using Blazor.Diagrams.Core.Geometry
+@using Blazor.Diagrams.Core.Models
+@using Blazor.Diagrams.Components;
+<CascadingValue Value="@_diagram">
+    <DiagramCanvas/>
+</CascadingValue>
+
+@code {
+
+    private readonly Diagram _diagram = new(new DiagramOptions
+    {
+        Constraints = new DiagramConstraintsOptions
+        {
+        },
+        AllowPanning = true,
+        AllowMultiSelection = true,
+        DeleteKey = "Delete",
+        DefaultNodeComponent = null,
+        Links = new DiagramLinkOptions
+        {
+            EnableSnapping = true,
+            SnappingRadius = 20,
+            DefaultRouter = Routers.Orthogonal,
+            DefaultPathGenerator = PathGenerators.Smooth,
+        },
+        Zoom = new DiagramZoomOptions
+        {
+            Enabled = true,
+            Inverse = true,
+            Minimum = 0.125,
+            Maximum = 1,
+        },
+    });
+
+    [Parameter]
+    public OrchestrationTab Host { get; set; } = null!;
+
+    [Parameter]
+    public object Service { get; set; } = null!;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Setup();
+        _diagram.Links.Added += Host.LinkAdded;
+        _diagram.Links.Removed += Host.LinkRemoved;
+        _diagram.Nodes.Added += Host.NodeAdded;
+        _diagram.Nodes.Removed += Host.NodeRemoved;
+    }
+
+    private void Setup()
+    {
+        var node1 = NewNode(50, 50);
+        var node2 = NewNode(300, 300);
+        var node3 = NewNode(300, 50);
+        _diagram.Nodes.Add(new[]{node1, node2, node3});
+    }
+
+    private NodeModel NewNode(double x, double y)
+    {
+        var node = new NodeModel(new Point(x, y));
+        node.AddPort(PortAlignment.Bottom);
+        node.AddPort(PortAlignment.Top);
+        node.AddPort(PortAlignment.Left);
+        node.AddPort(PortAlignment.Right);
+        return node;
+    }
+
+}

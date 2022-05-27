@@ -4,6 +4,6 @@ namespace X39.Systems.ServiceOrchestrator.Designer.Repositories;
 
 public interface IServiceRepository
 {
-    IAsyncEnumerable<Service> GetServicesAsync();
-    Task<Service> CreateServiceAsync(CancellationToken cancellationToken, Service service);
+    IAsyncEnumerable<Orchestration> GetServicesAsync();
+    Task<Orchestration> CreateServiceAsync(CancellationToken cancellationToken, Orchestration orchestration);
 }

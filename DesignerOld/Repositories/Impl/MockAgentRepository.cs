@@ -15,10 +15,10 @@ public sealed class AgentRepository : IAgentRepository
     // ReSharper disable once ArrangeObjectCreationWhenTypeEvident
     private readonly List<Agent> _data = new List<Agent>()
     {
-        new() {Id = Guid.NewGuid(), Name = "Agent 1"},
-        new() {Id = Guid.NewGuid(), Name = "Agent 2"},
-        new() {Id = Guid.NewGuid(), Name = "Agent 3"},
-        new() {Id = Guid.NewGuid(), Name = "Agent 4"},
+        new() {Guid = Guid.NewGuid(), Name = "Agent 1"},
+        new() {Guid = Guid.NewGuid(), Name = "Agent 2"},
+        new() {Guid = Guid.NewGuid(), Name = "Agent 3"},
+        new() {Guid = Guid.NewGuid(), Name = "Agent 4"},
     };
 
     public async IAsyncEnumerable<Agent> GetAgentsAsync()
@@ -29,7 +29,7 @@ public sealed class AgentRepository : IAgentRepository
 
     public Task<Agent> CreateAgentAsync(CancellationToken cancellationToken, Agent agent)
     {
-        agent = agent with {Id = Guid.NewGuid()};
+        agent = agent with {Guid = Guid.NewGuid()};
         _data.Add(agent);
         return Task.FromResult(agent);
     }

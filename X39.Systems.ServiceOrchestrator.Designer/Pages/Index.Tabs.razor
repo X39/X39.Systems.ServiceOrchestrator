@@ -1,33 +1,70 @@
 @using X39.Systems.ServiceOrchestrator.Designer.Data
+@using System.Collections.Specialized
 @inject TabService TabService
-<MudDynamicTabs Elevation="4"
+@implements IDisposable
+<MudTabs Elevation="4"
                 Style="height: 100%"
                 Rounded="true"
                 ApplyEffectsToContainer="true"
-                PanelClass="px-4 py-6"
-                AddTab="AddTabCallback"
+                PanelClass="px-4 py-6 mud-height-full mud-width-full"
                 CloseTab="CloseTabCallbackAsync"
                 @bind-ActivePanelIndex="_index"
                 AddIconToolTip="Click here to add a new tab"
                 CloseIconToolTip="Close this tab. All data will be lost">
+    <Header>
+        <!-- empty -->
+    </Header>
+    <ChildContent>
     @foreach (var tab in TabService.Tabs)
     {
-        <MudTabPanel Icon="@tab.TabIcon" Text="@tab.TabName" Tag="@(new TabTag(tab.Guid, tab))">
+        <MudTabPanel Icon="@tab.TabIcon"
+                     Text="@tab.TabName"
+                     Tag="@(new TabTag(tab.Guid, tab))"
+                     ID="tab.Guid">
             <DynamicComponent Type="@tab.TabComponentType" Parameters="@tab.TabComponentParameters"/>
         </MudTabPanel>
     }
-</MudDynamicTabs>
+    </ChildContent>
+    <TabPanelHeader>
+        <MudTooltip Text="Close the tab">
+            <MudIconButton Class="ml-2 pa-1"
+                           Icon="@Icons.Material.Filled.Close"
+                           OnClick="(_) => CloseTabCallbackAsync(context)" />
+        </MudTooltip>
+    </TabPanelHeader>
+</MudTabs>
 
 @code {
 
     private record struct TabTag(Guid Guid, ITabHost TabHost);
 
     private int _index;
-    private bool _updateIndex;
+    private ITabHost? _updateIndexTo;
 
-    private void AddTabCallback()
+    protected override Task OnInitializedAsync()
     {
-        _updateIndex = true;
+        TabService.SelectedTabChanged += TabServiceOnSelectedTabChangedAsync;
+        TabService.TabsChanged += TabServiceOnTabsChanged;
+        return base.OnInitializedAsync();
+    }
+
+    private Task TabServiceOnTabsChanged(object? sender, EventArgs e)
+    {
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        TabService.SelectedTabChanged -= TabServiceOnSelectedTabChangedAsync;
+        TabService.TabsChanged -= TabServiceOnTabsChanged;
+    }
+
+    private Task TabServiceOnSelectedTabChangedAsync(object? sender, ITabHost e)
+    {
+        _updateIndexTo = e;
+        StateHasChanged();
+        return Task.CompletedTask;
     }
 
     private async Task CloseTabCallbackAsync(MudTabPanel mudTabPanel)
@@ -43,9 +80,11 @@
 
     protected override void OnAfterRender(bool firstRender)
     {
-        if (!_updateIndex) return;
-        _index = TabService.Tabs.Count - 1;
+        if (_updateIndexTo is null)
+            return;
+        _index = TabService.Tabs.TakeWhile((q) => q != _updateIndexTo).Count();
+        _updateIndexTo = null;
         StateHasChanged();
-        _updateIndex = false;
     }
+
 }

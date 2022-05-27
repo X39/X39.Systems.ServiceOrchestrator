@@ -15,10 +15,10 @@ public sealed class ValidatorRepository : IValidatorRepository
     // ReSharper disable once ArrangeObjectCreationWhenTypeEvident
     private readonly List<Validator> _data = new List<Validator>()
     {
-        new() {Id = Guid.NewGuid(), Name = "Validator 1"},
-        new() {Id = Guid.NewGuid(), Name = "Validator 2"},
-        new() {Id = Guid.NewGuid(), Name = "Validator 3"},
-        new() {Id = Guid.NewGuid(), Name = "Validator 4"},
+        new() {Guid = Guid.NewGuid(), Name = "Validator 1"},
+        new() {Guid = Guid.NewGuid(), Name = "Validator 2"},
+        new() {Guid = Guid.NewGuid(), Name = "Validator 3"},
+        new() {Guid = Guid.NewGuid(), Name = "Validator 4"},
     };
 
     public async IAsyncEnumerable<Validator> GetValidatorsAsync()
@@ -29,7 +29,7 @@ public sealed class ValidatorRepository : IValidatorRepository
 
     public Task<Validator> CreateValidatorAsync(CancellationToken cancellationToken, Validator validator)
     {
-        validator = validator with {Id = Guid.NewGuid()};
+        validator = validator with {Guid = Guid.NewGuid()};
         _data.Add(validator);
         return Task.FromResult(validator);
     }

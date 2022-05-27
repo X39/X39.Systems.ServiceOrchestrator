@@ -1,0 +1,47 @@
+@using System.Collections.Specialized
+@implements IDisposable
+@if (Progress.Contexts.Any())
+{
+    @if (Progress.Contexts.Count > 1)
+    {
+        <MudProgressLinear Indeterminate="true"
+                           Style="position: absolute; bottom: 0; left: 0; right: 0;"/>
+    }
+    else
+    {
+        var context = Progress.Contexts.First();
+        <MudProgressLinear Indeterminate="context.IsIndeterminate"
+                           Style="position: absolute; bottom: 0; left: 0; right: 0;"
+                           Buffer="context.CanBuffer"
+                           Max="context.MaxValue"
+                           Min="context.MinValue"
+                           Value="context.Value"
+                           BufferValue="context.BufferValue"
+                           Rounded="false"/>
+    }
+}
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Progress.Started += OnProgressStateChanged;
+        Progress.ContextChanged += OnProgressStateChanged;
+        Progress.Ended += OnProgressStateChanged;
+    }
+
+    private Task OnProgressStateChanged(object? sender, ProgressContext progressContext)
+    {
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        Progress.Started -= OnProgressStateChanged;
+        Progress.ContextChanged -= OnProgressStateChanged;
+        Progress.Ended -= OnProgressStateChanged;
+    }
+
+}
