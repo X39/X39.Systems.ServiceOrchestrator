@@ -6,8 +6,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization", "Serialization\Serialization.csproj", "{3A57033A-6ABA-4B73-AED0-BF9CAAB109B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "X39.Util.Blazor", "X39.Util.Blazor\X39.Util.Blazor.csproj", "{E30FA7E8-2385-4B4B-9759-5B902DBBF782}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "X39.Util.AspNetCore.Auth", "X39.Util.AspNetCore.Auth\X39.Util.AspNetCore.Auth.csproj", "{63477614-0954-4ADF-B801-71A648104C33}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{F4923E63-5477-4F4F-BD19-9446F5CBE332}"
@@ -36,10 +34,6 @@ Global
 		{3A57033A-6ABA-4B73-AED0-BF9CAAB109B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A57033A-6ABA-4B73-AED0-BF9CAAB109B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A57033A-6ABA-4B73-AED0-BF9CAAB109B3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E30FA7E8-2385-4B4B-9759-5B902DBBF782}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E30FA7E8-2385-4B4B-9759-5B902DBBF782}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E30FA7E8-2385-4B4B-9759-5B902DBBF782}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E30FA7E8-2385-4B4B-9759-5B902DBBF782}.Release|Any CPU.Build.0 = Release|Any CPU
 		{63477614-0954-4ADF-B801-71A648104C33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{63477614-0954-4ADF-B801-71A648104C33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63477614-0954-4ADF-B801-71A648104C33}.Release|Any CPU.ActiveCfg = Release|Any CPU
